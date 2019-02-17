@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/icons/export.png</file>
+        <file>resources/icons/ignore.png</file>
+        <file>resources/icons/module.png</file>
+        <file>resources/icons/variable.png</file>
+        <file>resources/icons/programe.png</file>
+        <file>resources/icons/select.png</file>
+        <file>resources/icons/source.png</file>
+    </qresource>
+</RCC>
