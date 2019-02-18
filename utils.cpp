@@ -31,7 +31,9 @@ AppIconSet::AppIconSet():
     ic_program{":/resources/icons/programe.png"},
     ic_select{":/resources/icons/select.png"},
     ic_source{":/resources/icons/source.png"},
-    ic_variable{":/resources/icons/variable.png"}
+    ic_variable{":/resources/icons/variable.png"},
+    ic_edit{":/resources/icons/edit.png"},
+    ic_delete{":/resources/icons/delete.png"}
 {
 
 }

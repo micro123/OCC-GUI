@@ -56,7 +56,17 @@
       </widget>
      </item>
      <item row="1" column="0" rowspan="4">
-      <widget class="QListView" name="lvParameters"/>
+      <widget class="QListView" name="lvParameters">
+       <property name="contextMenuPolicy">
+        <enum>Qt::CustomContextMenu</enum>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;传递给&lt;span style=&quot; font-weight:600;&quot;&gt;OpenCppCoverage.exe&lt;/span&gt;的参数列表&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+      </widget>
      </item>
      <item row="1" column="1">
       <widget class="QToolButton" name="btnAddMenu">
@@ -65,6 +75,9 @@
          <width>180</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="toolTip">
+        <string/>
        </property>
        <property name="text">
         <string>请选择操作</string>
@@ -108,7 +121,16 @@
       </spacer>
      </item>
      <item row="4" column="1">
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btnAnalysis">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;需要参数:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;1.&lt;/span&gt;OpenCppCoverage可执行文件&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;2.&lt;/span&gt;要分析的可执行文件&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;3.&lt;/span&gt;分析结果导出目录&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
        <property name="text">
         <string>启动分析</string>
        </property>

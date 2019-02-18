@@ -26,13 +26,15 @@ private slots:
     void on_btnAutoDetect_clicked();
 
     void on_btnBrowser_clicked();
+
     void on_btnReset_clicked();
 
-    void on_pushButton_clicked();
+    void on_btnAnalysis_clicked();
 
 private:
     Ui::OccMainWindow *ui;
     QMenu *m_addMenu;
+    QMenu *m_lvParamMenu;
     QAction *m_actions[ActionTypeCount];
     QAction *m_lastAction;
     ParameterSetModel *m_model;
@@ -45,6 +47,8 @@ private:
 
     void InitConnections();
 
+    void SetLastAction(QAction *act);
+
     void OnAddPath();
 
     void OnAddExport();
@@ -56,6 +60,13 @@ private:
     void OnAddSourceDir();
 
     void OnAddExcludedSourceDir();
+
+    void ShowLvParameterMenu(const QPoint &pos);
+
+    void OnRemoveParameter(const QModelIndex &index);
+
+signals:
+
 };
 
 #endif // OCCMAINWINDOW_H

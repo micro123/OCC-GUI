@@ -14,7 +14,7 @@ void ParameterSetModel::AddParameter(int type, const QString &arg)
 {
     beginResetModel ();
     // replace all '/' to '\'
-    QString t = arg;
+    QString t = arg.trimmed ();
     t.replace ("/", "\\");
     m_model_data.append (ParameterItem{type, t});
     endResetModel ();

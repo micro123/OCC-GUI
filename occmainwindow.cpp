@@ -4,7 +4,7 @@
 #include "parametersetmodel.h"
 #include "commandexecutedialog.h"
 
-#define OCC_CMD "OpenCppCoverage"
+#define OCC_CMD "OpenCppCoverage.exe"
 
 #include <QFileDialog>
 #include <QMenu>
@@ -16,12 +16,14 @@ OccMainWindow::OccMainWindow(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::OccMainWindow)
     , m_addMenu(nullptr)
+    , m_lvParamMenu(nullptr)
     , m_lastAction(nullptr)
     , m_model(new ParameterSetModel(this))
     , m_dialog(new CommandExecuteDialog(this))
 {
     ui->setupUi(this);
     m_addMenu = new QMenu(this);
+    m_lvParamMenu = new QMenu(this);
 
     InitMenus ();
     InitViews ();
@@ -54,7 +56,7 @@ void OccMainWindow::on_btnAutoDetect_clicked()
 void OccMainWindow::on_btnBrowser_clicked()
 {
     QString path;
-    path = QFileDialog::getOpenFileName(this, "Select", qApp->applicationDirPath(), "OpenCppCoverage.exe");
+    path = QFileDialog::getOpenFileName(this, "Select", qApp->applicationDirPath(), OCC_CMD);
 
     if (!path.isEmpty())
     {
@@ -68,8 +70,7 @@ void OccMainWindow::on_btnBrowser_clicked()
 
 void OccMainWindow::InitMenus()
 {
-    // TODO 添加处理
-
+    // For Add button
     m_actions[ActionTypeAddPath] = m_addMenu->addAction (IC_SET->ic_variable,
                                    "添加Path路径", this, &OccMainWindow::OnAddPath);
     m_actions[ActionTypeAddExecutable] = m_addMenu->addAction (IC_SET->ic_program,
@@ -82,6 +83,22 @@ void OccMainWindow::InitMenus()
                                      "添加要分析的模块名", this, &OccMainWindow::OnAddModule);
     m_actions[ActionTypeAddExport] = m_addMenu->addAction (IC_SET->ic_export,
                                      "添加导出路径", this, &OccMainWindow::OnAddExport);
+
+    // For lvParameter
+    m_lvParamMenu->addAction (IC_SET->ic_edit, "编辑", [&]
+    {
+        auto index = ui->lvParameters->currentIndex ();
+
+        if (index.isValid ())
+        {
+            ui->lvParameters->edit (index);
+        }
+    });
+
+    m_lvParamMenu->addAction (IC_SET->ic_delete, "删除", [&]
+    {
+        OnRemoveParameter(ui->lvParameters->currentIndex ());
+    });
 }
 
 void OccMainWindow::InitViews()
@@ -96,51 +113,51 @@ void OccMainWindow::InitConnections()
 {
     connect (ui->btnAddMenu, &QToolButton::triggered, [&](QAction * act)
     {
-        if (act == m_actions[ActionTypeAddExecutable] || act == m_actions[ActionTypeAddExport])
-        {
-            ui->btnAddMenu->setText ("请选择操作");
-            m_lastAction = nullptr;
-            act->setEnabled (false);
-            ui->btnAddMenu->setIcon(IC_SET->ic_select);
-        }
-        else
-        {
-            m_lastAction = act;
-            ui->btnAddMenu->setText (act->text ());
-            ui->btnAddMenu->setIcon (act->icon ());
-        }
+        this->SetLastAction (act);
     });
     connect (ui->btnAddMenu, &QToolButton::clicked, [&]
     {
-        if (m_lastAction != nullptr)
+        if (m_lastAction != nullptr && m_lastAction->isEnabled ())
         {
             m_lastAction->trigger ();
         }
     });
-    connect (ui->lvParameters, &QListView::doubleClicked, [&](const QModelIndex & index)
+    connect (ui->lvParameters, &QListView::doubleClicked, this, &OccMainWindow::OnRemoveParameter);
+
+    connect (ui->lvParameters, &QListView::customContextMenuRequested, this, &OccMainWindow::ShowLvParameterMenu);
+}
+
+void OccMainWindow::SetLastAction(QAction *act)
+{
+    if (!act)
     {
-        auto btn = QMessageBox::question (this, "消息", "确定要移除这个参数吗?");
+        return;
+    }
 
-        if (btn == QMessageBox::Yes)
-        {
-            // 判断是不是程序或者导出目录
-            if (index.data (Qt::UserRole).canConvert<int>())
-            {
-                int type = index.data (Qt::UserRole).value<int>();
+    m_lastAction = act;
 
-                if (type == ActionTypeAddExport)
-                {
-                    m_actions[ActionTypeAddExport]->setEnabled (true);
-                }
-                else if (type == ActionTypeAddExecutable)
-                {
-                    m_actions[ActionTypeAddExecutable]->setEnabled (true);
-                }
-            }
+    if (!m_lastAction->isEnabled ())
+    {
+        ui->btnAddMenu->setIcon (IC_SET->ic_select);
+        ui->btnAddMenu->setText ("请选择操作");
+    }
+    else
+    {
+        ui->btnAddMenu->setIcon (act->icon ());
+        ui->btnAddMenu->setText (act->text ());
+    }
 
-            m_model->RemoveAt (index.row ());
-        }
-    });
+    // if all required parameters are set, the analysis button will enabled
+    if (!ui->leOccPath->text ().isEmpty () && // OpenCppCoverage.exe required
+            !m_actions[ActionTypeAddExecutable]->isEnabled () && // guest program
+            !m_actions[ActionTypeAddExport]->isEnabled ()) // export path
+    {
+        ui->btnAnalysis->setEnabled (true);
+    }
+    else
+    {
+        ui->btnAnalysis->setEnabled (false);
+    }
 }
 
 void OccMainWindow::OnAddPath()
@@ -160,11 +177,10 @@ void OccMainWindow::OnAddExport()
     if (!path.isEmpty ())
     {
         m_model->AddParameter (ActionTypeAddExport, path);
+        m_lastAction->setEnabled (false);
     }
-    else
-    {
-        m_actions[ActionTypeAddExport]->setEnabled (true);
-    }
+
+    SetLastAction (m_lastAction);
 }
 
 void OccMainWindow::OnAddExecutable()
@@ -174,11 +190,10 @@ void OccMainWindow::OnAddExecutable()
     if (!path.isEmpty ())
     {
         m_model->AddParameter (ActionTypeAddExecutable, path);
+        m_lastAction->setEnabled (false);
     }
-    else
-    {
-        m_actions[ActionTypeAddExecutable]->setEnabled (true);
-    }
+
+    SetLastAction (m_lastAction);
 }
 
 void OccMainWindow::OnAddModule()
@@ -222,12 +237,57 @@ void OccMainWindow::OnAddExcludedSourceDir()
     }
 }
 
+void OccMainWindow::ShowLvParameterMenu(const QPoint &pos)
+{
+    Q_UNUSED (pos)
+    m_lvParamMenu->exec (QCursor::pos());
+}
+
+void OccMainWindow::OnRemoveParameter(const QModelIndex &index)
+{
+    if (!index.isValid ())
+    {
+        return;
+    }
+
+    auto btn = QMessageBox::question (this, "消息", "确定要移除这个参数吗?");
+
+    if (btn == QMessageBox::Yes)
+    {
+        // 判断是不是程序或者导出目录
+        if (index.data (Qt::UserRole).canConvert<int>())
+        {
+            int type = index.data (Qt::UserRole).value<int>();
+
+            if (type == ActionTypeAddExport)
+            {
+                m_actions[ActionTypeAddExport]->setEnabled (true);
+            }
+            else if (type == ActionTypeAddExecutable)
+            {
+                m_actions[ActionTypeAddExecutable]->setEnabled (true);
+            }
+        }
+
+        m_model->RemoveAt (index.row ());
+    }
+
+    SetLastAction (m_lastAction);
+}
+
 void OccMainWindow::on_btnReset_clicked()
 {
     m_model->Reset ();
+
+    for (QAction *act : m_actions)
+    {
+        act->setEnabled (true); // Renable All actions
+    }
+
+    ui->btnAnalysis->setEnabled (false);
 }
 
-void OccMainWindow::on_pushButton_clicked()
+void OccMainWindow::on_btnAnalysis_clicked()
 {
     QStringList env = m_model->GetProgramEnv ();
     QStringList args;

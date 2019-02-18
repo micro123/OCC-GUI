@@ -34,6 +34,8 @@ public:
     const QIcon ic_select;
     const QIcon ic_source;
     const QIcon ic_variable;
+    const QIcon ic_edit;
+    const QIcon ic_delete;
 
     static AppIconSet *GetInstance();
     const QIcon GetIconAt(int type) const;

@@ -37,7 +37,6 @@ void CommandExecuteDialog::OpenDialog(const QString &cmd, const QStringList &env
 
     connect (m_proc, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [&](int code, QProcess::ExitStatus st)
     {
-        qDebug() << code << st;
         ui->etStdout->append (m_proc->readAllStandardOutput ());
         ui->etStderr->append (m_proc->readAllStandardError ());
     });

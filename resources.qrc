@@ -7,5 +7,7 @@
         <file>resources/icons/programe.png</file>
         <file>resources/icons/select.png</file>
         <file>resources/icons/source.png</file>
+        <file>resources/icons/delete.png</file>
+        <file>resources/icons/edit.png</file>
     </qresource>
 </RCC>
