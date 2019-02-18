@@ -7,14 +7,15 @@ GUI tool for OpenCppCoverage. Require OpenCppCoverage executable binary.
 2. Windows 10 x64
 
 ## An OpenCppCoverage executable binary is required.
-1. https://github.com/OpenCppCoverage/OpenCppCoverage repository here
+1. OpenCppCoverage repository https://github.com/OpenCppCoverage/OpenCppCoverage
 
 ## TODO-List
 1. Add single-file support(for --sources and --excluded_sources).
 2. Add communicate with guest process.
 3. Add set_work_directiry support.
 4. Add guest process and OpenCppCoverage process out export support.
-5. Add support for argument edit.
+5. Add support for argument editing.
+6. open analysis result page or show in explorer.
 
 ## Current state
 1. Support add many directory to PATH environment variable.
@@ -22,3 +23,4 @@ GUI tool for OpenCppCoverage. Require OpenCppCoverage executable binary.
 3. --sources and --excluded_sources now only support directory.
 4. Multiple modules support.
 5. Easily it run again.
+6. Strings
