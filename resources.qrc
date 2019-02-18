@@ -9,5 +9,6 @@
         <file>resources/icons/source.png</file>
         <file>resources/icons/delete.png</file>
         <file>resources/icons/edit.png</file>
+        <file>resources/icons/work_dir.png</file>
     </qresource>
 </RCC>

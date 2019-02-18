@@ -83,6 +83,9 @@ void OccMainWindow::InitMenus()
                                      "添加要分析的模块名", this, &OccMainWindow::OnAddModule);
     m_actions[ActionTypeAddExport] = m_addMenu->addAction (IC_SET->ic_export,
                                      "添加导出路径", this, &OccMainWindow::OnAddExport);
+    m_actions[ActionTypeAddWorkDirectory] = m_addMenu->addAction (IC_SET->ic_workdir,
+                                            "添加工作目录", this, &OccMainWindow::OnAddWorkDir);
+
 
     // For lvParameter
     m_lvParamMenu->addAction (IC_SET->ic_edit, "编辑", [&]
@@ -150,7 +153,8 @@ void OccMainWindow::SetLastAction(QAction *act)
     // if all required parameters are set, the analysis button will enabled
     if (!ui->leOccPath->text ().isEmpty () && // OpenCppCoverage.exe required
             !m_actions[ActionTypeAddExecutable]->isEnabled () && // guest program
-            !m_actions[ActionTypeAddExport]->isEnabled ()) // export path
+            !m_actions[ActionTypeAddExport]->isEnabled () && // export path
+            !m_actions[ActionTypeAddWorkDirectory]->isEnabled ()) // work directory
     {
         ui->btnAnalysis->setEnabled (true);
     }
@@ -237,6 +241,19 @@ void OccMainWindow::OnAddExcludedSourceDir()
     }
 }
 
+void OccMainWindow::OnAddWorkDir()
+{
+    QString path = QFileDialog::getExistingDirectory (this, "请选择程序工作目录", QDir::currentPath ());
+
+    if (!path.isEmpty ())
+    {
+        m_model->AddParameter (ActionTypeAddWorkDirectory, path);
+        m_lastAction->setEnabled (false);
+    }
+
+    SetLastAction (m_lastAction);
+}
+
 void OccMainWindow::ShowLvParameterMenu(const QPoint &pos)
 {
     Q_UNUSED (pos)
@@ -289,8 +306,9 @@ void OccMainWindow::on_btnReset_clicked()
 
 void OccMainWindow::on_btnAnalysis_clicked()
 {
+    QString work_dir = m_model->GetWorkDirectory ();
     QStringList env = m_model->GetProgramEnv ();
     QStringList args;
     m_model->BuildArguments (args);
-    m_dialog->OpenDialog (ui->leOccPath->text (), env, args);
+    m_dialog->OpenDialog (ui->leOccPath->text (), work_dir, env, args);
 }

@@ -33,7 +33,8 @@ AppIconSet::AppIconSet():
     ic_source{":/resources/icons/source.png"},
     ic_variable{":/resources/icons/variable.png"},
     ic_edit{":/resources/icons/edit.png"},
-    ic_delete{":/resources/icons/delete.png"}
+    ic_delete{":/resources/icons/delete.png"},
+    ic_workdir{":/resources/icons/work_dir.png"}
 {
 
 }
@@ -54,6 +55,7 @@ const QIcon AppIconSet::GetIconAt(int type) const
         {ActionTypeAddExcludeSource, ic_ignore},
         {ActionTypeAddModule, ic_module},
         {ActionTypeAddExport, ic_export},
+        {ActionTypeAddWorkDirectory, ic_workdir},
     };
 
     if (my_icons.contains (type))
@@ -74,6 +76,7 @@ const QString &GetInformation(int type)
         "排除源代码路径",
         "要分析的模块名称",
         "分析结果导出位置",
+        "程序工作目录",
         "",
     };
 

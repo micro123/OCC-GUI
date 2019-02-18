@@ -65,6 +65,21 @@ void ParameterSetModel::RemoveAt(int index)
     endResetModel ();
 }
 
+const QString &ParameterSetModel::GetWorkDirectory() const
+{
+    static const QString empty_path{""};
+
+    for (auto const &x : m_model_data)
+    {
+        if (x.type == ActionTypeAddWorkDirectory)
+        {
+            return x.arg;
+        }
+    }
+
+    return empty_path;
+}
+
 QStringList ParameterSetModel::GetProgramEnv() const
 {
     QStringList sys_env = QProcess::systemEnvironment ();

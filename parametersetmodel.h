@@ -22,6 +22,8 @@ public:
 
     void RemoveAt(int index);
 
+    const QString &GetWorkDirectory() const;
+
     QStringList GetProgramEnv() const;
     // QAbstractItemModel interface
 public:

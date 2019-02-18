@@ -23,7 +23,7 @@ CommandExecuteDialog::~CommandExecuteDialog()
     delete ui;
 }
 
-void CommandExecuteDialog::OpenDialog(const QString &cmd, const QStringList &env, const QStringList &args)
+void CommandExecuteDialog::OpenDialog(const QString &cmd, const QString &work_dir, const QStringList &env, const QStringList &args)
 {
     if (m_proc != nullptr)
     {
@@ -35,10 +35,17 @@ void CommandExecuteDialog::OpenDialog(const QString &cmd, const QStringList &env
     m_proc->setEnvironment (env);
     m_proc->setArguments (args);
 
+    if (!work_dir.isEmpty ())
+    {
+        m_proc->setWorkingDirectory (work_dir);
+    }
+
     connect (m_proc, static_cast<void (QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [&](int code, QProcess::ExitStatus st)
     {
+        static QString info{"程序%1, 代码%2."};
         ui->etStdout->append (m_proc->readAllStandardOutput ());
         ui->etStderr->append (m_proc->readAllStandardError ());
+        ui->lbExtraInfo->setText (info.arg (st == 0 ? QString{"正常退出"} : QString{"崩溃结束"}).arg (QString::number (code)));
     });
 
     connect (m_proc, &QProcess::stateChanged, [&](QProcess::ProcessState st)

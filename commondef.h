@@ -12,6 +12,7 @@ enum ActionType
     ActionTypeAddExcludeSource,
     ActionTypeAddModule,
     ActionTypeAddExport,
+    ActionTypeAddWorkDirectory,
 
     ActionTypeCount,
 };
@@ -36,6 +37,7 @@ public:
     const QIcon ic_variable;
     const QIcon ic_edit;
     const QIcon ic_delete;
+    const QIcon ic_workdir;
 
     static AppIconSet *GetInstance();
     const QIcon GetIconAt(int type) const;

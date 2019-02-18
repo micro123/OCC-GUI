@@ -19,7 +19,8 @@ public:
     explicit CommandExecuteDialog(QWidget *parent = nullptr);
     ~CommandExecuteDialog();
 
-    void OpenDialog(const QString &cmd, const QStringList &evn = QStringList(), const QStringList &args = QStringList());
+    void OpenDialog(const QString &cmd, const QString &work_dir = QString(""),
+                    const QStringList &evn = QStringList(), const QStringList &args = QStringList());
 private slots:
     void on_btnStop_clicked();
 

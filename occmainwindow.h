@@ -61,6 +61,8 @@ private:
 
     void OnAddExcludedSourceDir();
 
+    void OnAddWorkDir();
+
     void ShowLvParameterMenu(const QPoint &pos);
 
     void OnRemoveParameter(const QModelIndex &index);

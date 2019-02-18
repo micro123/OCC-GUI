@@ -14,10 +14,10 @@
    <string>OCC-GUI</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
-    <widget class="QLabel" name="lbStatus">
+   <item row="2" column="8">
+    <widget class="QPushButton" name="btnRerun">
      <property name="text">
-      <string>状态:</string>
+      <string>重新运行</string>
      </property>
     </widget>
    </item>
@@ -28,7 +28,69 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="6" colspan="4">
+    <widget class="QTextEdit" name="etStderr">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="4">
+    <widget class="QLabel" name="lbExtraInfo">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="6">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>标准错误:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="lbStatus">
+     <property name="text">
+      <string>状态:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="6">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>标准输出:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="6">
+    <widget class="QTextEdit" name="etStdout">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="7">
+    <widget class="QPushButton" name="btnStop">
+     <property name="text">
+      <string>停止</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="9">
     <widget class="QPushButton" name="btnClose">
      <property name="text">
       <string>关闭</string>
@@ -48,47 +110,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="5">
-    <widget class="QPushButton" name="btnStop">
-     <property name="text">
-      <string>停止</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="6">
-    <widget class="QPushButton" name="btnRerun">
-     <property name="text">
-      <string>重新运行</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="4" colspan="4">
-    <widget class="QTextEdit" name="etStderr">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" colspan="2">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>标准输出:</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="3">
     <spacer name="horizontalSpacer_2">
      <property name="orientation">
@@ -101,20 +122,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="1" column="0" colspan="4">
-    <widget class="QTextEdit" name="etStdout">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="4">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>标准错误:</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
